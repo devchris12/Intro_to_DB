@@ -1,5 +1,6 @@
 -- Script to print the full description of the books table from alx_book_store database
 -- Using INFORMATION_SCHEMA to get table structure without DESCRIBE or EXPLAIN
+SHOW CREATE TABLE `books`;
 
 SELECT 
     COLUMN_NAME AS 'Field',
