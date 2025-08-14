@@ -1,8 +1,14 @@
--- =============================================
--- task_4.sql - Full Description of Books Table
--- Shows complete structure of the books table
--- Database name will be passed as argument to mysql command
--- =============================================
+-- task_4.sql
 
--- Show full description of the books table using SHOW COLUMNS
-SHOW COLUMNS FROM books;
+SELECT 
+    COLUMN_NAME AS 'Field',
+    COLUMN_TYPE AS 'Type',
+    IS_NULLABLE AS 'Null',
+    COLUMN_KEY AS 'Key',
+    COLUMN_DEFAULT AS 'Default',
+    EXTRA AS 'Extra'
+FROM 
+    INFORMATION_SCHEMA.COLUMNS
+WHERE 
+    TABLE_SCHEMA = 'alx_book_store' 
+    AND TABLE_NAME = 'books';
