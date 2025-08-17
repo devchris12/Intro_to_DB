@@ -1,42 +1,58 @@
-#!/usr/bin/python3
-"""
-A script to create the 'alx_book_store' database in a MySQL server.
-"""
-
+# MySQLServer.py
 import mysql.connector
-from mysql.connector import Error
+import os
 
+# Check if the file exists and is not empty
+def check_file_exists_and_not_empty(file_path):
+    if os.path.exists(file_path):
+        if os.path.getsize(file_path) > 0:
+            print(f"File {file_path} exists and is not empty.")
+        else:
+            print(f"File {file_path} exists but is empty.")
+            return False
+    else:
+        print(f"File {file_path} does not exist.")
+        return False
+    return True
+
+# Create database and handle exceptions
 def create_database():
-    """Connects to MySQL server and creates the specified database."""
-    conn = None
-    cursor = None
     try:
-        # --- Step 1: Establish a connection ---
-        # NOTE: Replace 'your_user' and 'your_password' with your MySQL credentials.
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="your_user",        # Default is often 'root'
-            password="your_password" # Your MySQL root password
+        # Establish connection to MySQL server
+        connection = mysql.connector.connect(
+            host="localhost",  # Your MySQL host (localhost in this case)
+            user="root",       # Your MySQL username
+            password="password" # Your MySQL password
         )
-        cursor = conn.cursor()
 
-        # --- Step 2: Execute the CREATE DATABASE command ---
-        # Using 'IF NOT EXISTS' prevents an error if the database is already there.
-        cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
+        cursor = connection.cursor()
 
-        print("Database 'alx_book_store' created successfully!")
+        # Check if the database already exists
+        cursor.execute("SHOW DATABASES LIKE 'alx_book_store'")
+        result = cursor.fetchone()
 
-    except Error as e:
-        # Handle any errors that occur during the process
-        print(f"Error: Failed to connect or create database: {e}")
+        if result:
+            print("Database 'alx_book_store' already exists.")
+        else:
+            # Create the database if it doesn't exist
+            cursor.execute("CREATE DATABASE alx_book_store")
+            print("Database 'alx_book_store' created successfully!")
 
-    finally:
-        # --- Step 3: Close the cursor and connection ---
-        # It's important to close resources to free them up.
-        if cursor is not None:
-            cursor.close()
-        if conn is not None and conn.is_connected():
-            conn.close()
+        # Close the cursor and connection
+        cursor.close()
+        connection.close()
 
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return False
+    return True
+
+# Run checks and actions
 if __name__ == "__main__":
-    create_database()
+    # Check if the file task_4.sql exists and is not empty
+    file_path = "task_4.sql"
+    if check_file_exists_and_not_empty(file_path):
+        # Create the database if it doesn't exist
+        create_database()
+    else:
+        print("Please ensure the file exists and is not empty.")
