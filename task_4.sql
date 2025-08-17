@@ -1,18 +1,13 @@
 -- task_4.sql
--- Script to print the full description of the "books" table
--- from the "alx_book_store" database without using DESCRIBE or EXPLAIN
-
-SELECT 
-    COLUMN_NAME AS 'Field',
-    COLUMN_TYPE AS 'Type',
-    IS_NULLABLE AS 'Null',
-    COLUMN_KEY AS 'Key',
-    COLUMN_DEFAULT AS 'Default',
-    EXTRA AS 'Extra'
-FROM 
-    INFORMATION_SCHEMA.COLUMNS
-WHERE 
-    TABLE_SCHEMA = 'alx_book_store'
-    AND TABLE_NAME = 'books'
-ORDER BY 
-    ORDINAL_POSITION;
+-- Prints column details for 'books' in the CURRENT database (passed via mysql cmd).
+SELECT
+  COLUMN_NAME   AS 'FIELD',
+  COLUMN_TYPE   AS 'TYPE',
+  IS_NULLABLE   AS 'NULL',
+  COLUMN_KEY    AS 'KEY',
+  COLUMN_DEFAULT AS 'DEFAULT',
+  EXTRA         AS 'EXTRA'
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_SCHEMA = DATABASE()
+  AND TABLE_NAME = 'books'
+ORDER BY ORDINAL_POSITION;
