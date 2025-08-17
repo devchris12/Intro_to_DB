@@ -1,42 +1,42 @@
+#!/usr/bin/python3
+"""
+A script to create the 'alx_book_store' database in a MySQL server.
+"""
+
 import mysql.connector
-from mysql.connector import errorcode
+from mysql.connector import Error
 
 def create_database():
-    """
-    Connects to the MySQL server and creates the 'alx_book_store' database.
-    """
+    """Connects to MySQL server and creates the specified database."""
+    conn = None
+    cursor = None
     try:
-        # Establish a connection to the MySQL server
-        cnx = mysql.connector.connect(
+        # --- Step 1: Establish a connection ---
+        # NOTE: Replace 'your_user' and 'your_password' with your MySQL credentials.
+        conn = mysql.connector.connect(
             host="localhost",
-            user="your_username",  # Replace with your MySQL username
-            password="your_password"  # Replace with your MySQL password
+            user="your_user",        # Default is often 'root'
+            password="your_password" # Your MySQL root password
         )
-        cursor = cnx.cursor()
+        cursor = conn.cursor()
 
-        db_name = "alx_book_store"
+        # --- Step 2: Execute the CREATE DATABASE command ---
+        # Using 'IF NOT EXISTS' prevents an error if the database is already there.
+        cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
 
-        # SQL statement to create the database if it doesn't exist
-        # 'IF NOT EXISTS' prevents the script from failing if the database already exists
-        sql_statement = f"CREATE DATABASE IF NOT EXISTS {db_name}"
+        print("Database 'alx_book_store' created successfully!")
 
-        # Execute the SQL statement
-        cursor.execute(sql_statement)
-        print(f"Database '{db_name}' created successfully!")
+    except Error as e:
+        # Handle any errors that occur during the process
+        print(f"Error: Failed to connect or create database: {e}")
 
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(f"Error: {err}")
     finally:
-        # Close the cursor and the connection
-        if 'cnx' in locals() and cnx.is_connected():
+        # --- Step 3: Close the cursor and connection ---
+        # It's important to close resources to free them up.
+        if cursor is not None:
             cursor.close()
-            cnx.close()
-            print("MySQL connection is closed.")
+        if conn is not None and conn.is_connected():
+            conn.close()
 
 if __name__ == "__main__":
     create_database()
