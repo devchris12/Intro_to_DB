@@ -1,15 +1,14 @@
--- task_4.sql
+-- This script prints the full description of the table 'books' from the specified database.
+-- It retrieves information from the INFORMATION_SCHEMA.COLUMNS table.
+
 SELECT
-  COLUMN_NAME AS `Field`,
-  COLUMN_TYPE AS `Type`,
-  CASE 
-    WHEN IS_NULLABLE = 'YES' THEN 'YES' 
-    ELSE 'NO' 
-  END AS `Null`,
-  COLUMN_KEY AS `Key`,
-  COLUMN_DEFAULT AS `Default`,
-  EXTRA AS `Extra`
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_SCHEMA = DATABASE()
-  AND TABLE_NAME = 'books'
-ORDER BY ORDINAL_POSITION;
+    COLUMN_NAME,
+    COLUMN_TYPE,
+    IS_NULLABLE,
+    COLUMN_KEY,
+    COLUMN_DEFAULT,
+    EXTRA
+FROM
+    INFORMATION_SCHEMA.COLUMNS
+WHERE
+    TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'books';
