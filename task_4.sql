@@ -1,12 +1,21 @@
 -- task_4.sql
--- Prints column details for 'books' in the CURRENT database (passed via mysql cmd).
+-- Prints full column description for 'books' in the CURRENT database (passed via mysql).
 SELECT
-  COLUMN_NAME   AS 'FIELD',
-  COLUMN_TYPE   AS 'TYPE',
-  IS_NULLABLE   AS 'NULL',
-  COLUMN_KEY    AS 'KEY',
-  COLUMN_DEFAULT AS 'DEFAULT',
-  EXTRA         AS 'EXTRA'
+  ORDINAL_POSITION            AS 'ORDINAL_POSITION',
+  COLUMN_NAME                 AS 'FIELD',
+  COLUMN_TYPE                 AS 'TYPE',
+  COLUMN_DEFAULT              AS 'DEFAULT',
+  IS_NULLABLE                 AS 'NULL',
+  CHARACTER_MAXIMUM_LENGTH    AS 'CHARACTER_MAXIMUM_LENGTH',
+  CHARACTER_OCTET_LENGTH      AS 'CHARACTER_OCTET_LENGTH',
+  NUMERIC_PRECISION           AS 'NUMERIC_PRECISION',
+  NUMERIC_SCALE               AS 'NUMERIC_SCALE',
+  DATETIME_PRECISION          AS 'DATETIME_PRECISION',
+  CHARACTER_SET_NAME          AS 'CHARSET',
+  COLLATION_NAME              AS 'COLLATION',
+  COLUMN_KEY                  AS 'KEY',
+  EXTRA                       AS 'EXTRA',
+  COLUMN_COMMENT              AS 'COMMENT'
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_SCHEMA = DATABASE()
   AND TABLE_NAME = 'books'
