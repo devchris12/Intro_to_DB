@@ -1,14 +1,12 @@
--- Task 4: Print full description of Books table from alx_book_store database
--- Using INFORMATION_SCHEMA instead of DESCRIBE or EXPLAIN statements
-
-SELECT 
-    COLUMN_NAME AS 'Field',
-    COLUMN_TYPE AS 'Type',
-    IS_NULLABLE AS 'Null',
-    COLUMN_KEY AS 'Key',
-    COLUMN_DEFAULT AS 'Default',
-    EXTRA AS 'Extra'
-FROM INFORMATION_SCHEMA.COLUMNS 
-WHERE TABLE_SCHEMA = 'alx_book_store' 
-    AND TABLE_NAME = 'Books'
+-- task_4.sql
+SELECT
+  COLUMN_NAME AS 'Field',
+  COLUMN_TYPE AS 'Type',
+  IF(IS_NULLABLE = 'YES', 'YES', 'NO') AS 'Null',
+  COLUMN_KEY AS 'Key',
+  COLUMN_DEFAULT AS 'Default',
+  EXTRA AS 'Extra'
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_SCHEMA = DATABASE()
+  AND TABLE_NAME = 'books'
 ORDER BY ORDINAL_POSITION;
