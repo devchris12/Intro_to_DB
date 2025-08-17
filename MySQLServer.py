@@ -1,21 +1,30 @@
-import os
+import mysql.connector
+from mysql.connector import Error
 
-def check_script(file_path):
-    # Check if the file exists and is not empty
-    if not os.path.isfile(file_path) or os.path.getsize(file_path) == 0:
-        print("File does not exist or is empty.")
-        return
+def create_database():
+    try:
+        # Establish connection to MySQL server
+        connection = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='your_password'  # Replace with your actual password
+        )
 
-    with open(file_path, 'r') as file:
-        content = file.read()
+        if connection.is_connected():
+            cursor = connection.cursor()
+            # Create database without using SELECT or SHOW
+            cursor.execute("CREATE DATABASE IF NOT EXISTS alx_book_store")
+            print("Database 'alx_book_store' created successfully!")
 
-    # Check for the code to handle exceptions
-    if 'try:' not in content or 'except' not in content:
-        print("The script does not contain the code to handle exceptions.")
-    
-    # Check if the student did not use the SELECT or SHOW statements
-    if 'SELECT' in content or 'SHOW' in content:
-        print("The script contains SELECT or SHOW statements.")
+    except Error as err:
+        print(f"Error: Could not connect to MySQL server.\n{err}")
 
-# Example usage
-check_script('MySQLServer.py')
+    finally:
+        # Ensure resources are properly closed
+        if 'cursor' in locals():
+            cursor.close()
+        if connection.is_connected():
+            connection.close()
+
+if __name__ == "__main__":
+    create_database()
